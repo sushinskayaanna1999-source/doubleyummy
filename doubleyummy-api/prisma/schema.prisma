@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String   @unique
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  dishes         Dish[]
+  swipeSessions  SwipeSession[]
+  sentShares     SharedSession[] @relation("sender")
+  receivedShares SharedSession[] @relation("recipient")
+
+  @@map("users")
+}
+
+model Dish {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  title       String   @db.VarChar(100)
+  description String?  @db.VarChar(500)
+  recipeText  String?  @map("recipe_text")
+  recipeUrl   String?  @map("recipe_url")
+  cuisineType String?  @map("cuisine_type") @db.VarChar(50)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media        DishMedia[]
+  mealTypes    DishMealType[]
+  tags         DishTag[]
+  swipeVotes   SwipeVote[]
+  partnerVotes PartnerVote[]
+
+  @@map("dishes")
+}
+
+model DishMedia {
+  id        String   @id @default(uuid())
+  dishId    String   @map("dish_id")
+  mediaType String   @map("media_type")
+  url       String
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  dish Dish @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  @@map("dish_media")
+}
+
+model DishMealType {
+  dishId   String @map("dish_id")
+  mealType String @map("meal_type")
+
+  dish Dish @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  @@id([dishId, mealType])
+  @@map("dish_meal_types")
+}
+
+model DishTag {
+  dishId String @map("dish_id")
+  tag    String
+
+  dish Dish @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  @@id([dishId, tag])
+  @@map("dish_tags")
+}
+
+model SwipeSession {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  mealType    String?   @map("meal_type")
+  filtersJson Json?     @map("filters_json")
+  status      String    @default("active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  completedAt DateTime? @map("completed_at")
+
+  user   User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes  SwipeVote[]
+  shares SharedSession[]
+
+  @@map("swipe_sessions")
+}
+
+model SwipeVote {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  dishId    String   @map("dish_id")
+  vote      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session SwipeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  dish    Dish         @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, dishId])
+  @@map("swipe_votes")
+}
+
+model SharedSession {
+  id          String    @id @default(uuid())
+  sessionId   String    @map("session_id")
+  senderId    String    @map("sender_id")
+  recipientId String?   @map("recipient_id")
+  shareCode   String    @unique @map("share_code") @db.VarChar(20)
+  status      String    @default("pending")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  votedAt     DateTime? @map("voted_at")
+
+  session   SwipeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sender    User         @relation("sender", fields: [senderId], references: [id])
+  recipient User?        @relation("recipient", fields: [recipientId], references: [id])
+  votes     PartnerVote[]
+
+  @@map("shared_sessions")
+}
+
+model PartnerVote {
+  id              String   @id @default(uuid())
+  sharedSessionId String   @map("shared_session_id")
+  dishId          String   @map("dish_id")
+  vote            String
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  sharedSession SharedSession @relation(fields: [sharedSessionId], references: [id], onDelete: Cascade)
+  dish          Dish          @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  @@unique([sharedSessionId, dishId])
+  @@map("partner_votes")
+}
