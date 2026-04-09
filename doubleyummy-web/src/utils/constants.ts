@@ -9,7 +9,7 @@ import {
 
 export const APP_NAME = "DoubleYummy";
 export const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001/api/v1";
-export const SERVER_URL = "http://localhost:3001";
+export const SERVER_URL = "https://doubleyummy-production.up.railway.app";
 export const APP_URL = import.meta.env.VITE_APP_URL ?? "http://localhost:5173";
 export const TAB_BAR_HEIGHT = 56;
 
