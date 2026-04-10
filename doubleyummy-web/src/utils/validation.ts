@@ -11,7 +11,7 @@ export const registerSchema = loginSchema
       .string()
       .min(3, "Минимум 3 символа")
       .max(20, "Максимум 20 символов")
-      .regex(/^[a-z0-9_]+$/, "Только latin, цифры и underscore"),
+      .regex(/^[a-zA-Z0-9_]+$/, "Только латиница, цифры и underscore"),
     confirmPassword: z.string()
   })
   .refine((value) => value.password === value.confirmPassword, {
@@ -24,7 +24,7 @@ export const profileSchema = z.object({
     .string()
     .min(3, "Минимум 3 символа")
     .max(20, "Максимум 20 символов")
-    .regex(/^[a-z0-9_]+$/, "Только latin, цифры и underscore")
+    .regex(/^[a-zA-Z0-9_]+$/, "Только латиница, цифры и underscore")
 });
 
 export const dishSchema = z.object({
