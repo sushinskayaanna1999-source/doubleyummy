@@ -30,9 +30,9 @@ export const profileSchema = z.object({
 export const dishSchema = z.object({
   title: z.string().min(1, "Введите название").max(100, "Максимум 100 символов"),
   mealTypes: z.array(z.string()).min(1, "Выберите хотя бы один тип приёма пищи"),
-  cuisineType: z.string().nullable(),
-  tags: z.array(z.string()),
-  description: z.string().max(500, "Максимум 500 символов").nullable(),
+  cuisineType: z.string().nullable().optional(),
+  tags: z.array(z.string()).optional(),
+  description: z.string().max(500, "Максимум 500 символов").nullable().optional(),
   recipeUrl: z.union([z.literal(""), z.string().url()]).nullable().optional(),
-  recipeText: z.string().max(5000, "Максимум 5000 символов").nullable()
+  recipeText: z.string().max(5000, "Максимум 5000 символов").nullable().optional()
 });
