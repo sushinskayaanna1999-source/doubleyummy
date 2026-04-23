@@ -8,20 +8,20 @@ type AuthState = {
   logout: () => void;
 };
 
-const storedToken = localStorage.getItem("doubleyummy-token");
-const storedUser = localStorage.getItem("doubleyummy-user");
+const storedToken = localStorage.getItem("Yummy-token");
+const storedUser = localStorage.getItem("Yummy-user");
 
 export const authStore = create<AuthState>((set) => ({
   token: storedToken,
   user: storedUser ? (JSON.parse(storedUser) as User) : null,
   setAuth: (token, user) => {
-    localStorage.setItem("doubleyummy-token", token);
-    localStorage.setItem("doubleyummy-user", JSON.stringify(user));
+    localStorage.setItem("Yummy-token", token);
+    localStorage.setItem("Yummy-user", JSON.stringify(user));
     set({ token, user });
   },
   logout: () => {
-    localStorage.removeItem("doubleyummy-token");
-    localStorage.removeItem("doubleyummy-user");
+    localStorage.removeItem("Yummy-token");
+    localStorage.removeItem("Yummy-user");
     set({ token: null, user: null });
   }
 }));

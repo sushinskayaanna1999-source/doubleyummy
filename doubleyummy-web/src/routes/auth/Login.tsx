@@ -21,7 +21,7 @@ export const Login = () => {
     <main className="mx-auto flex min-h-screen max-w-[430px] items-center px-4 py-8">
       <Card className="w-full space-y-5 p-6">
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">DoubleYummy</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Yummy</p>
           <h1 className="mt-3 text-3xl font-bold">Войти</h1>
         </div>
         <form

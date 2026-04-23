@@ -61,7 +61,7 @@ export const Result = () => {
             fullWidth
             onClick={async () => {
               if (navigator.share) {
-                await navigator.share({ url: shareUrl, title: "DoubleYummy" });
+                await navigator.share({ url: shareUrl, title: "Yummy" });
               } else {
                 await navigator.clipboard.writeText(shareUrl);
               }
