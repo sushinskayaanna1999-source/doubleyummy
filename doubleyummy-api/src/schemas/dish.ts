@@ -14,13 +14,13 @@ export const dishIdSchema = z.object({
   id: z.string().uuid()
 });
 
-const optionalUrl = z.union([z.literal(""), z.string().url()]).transform((value) => value || null);
+const optionalUrl = z.string().transform((value) => value || null).optional();
 
 export const dishFormSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(500).optional().nullable(),
   recipeText: z.string().max(5000).optional().nullable(),
-  recipeUrl: optionalUrl.optional().default(null),
+  recipeUrl: z.string().transform((value) => value || null).optional().nullable(),
   cuisineType: z.enum(CUISINE_TYPES).optional().nullable(),
   mealTypes: z.array(z.enum(MEAL_TYPES)).min(1),
   tags: z.array(z.enum(MOOD_TAGS)).optional().default([])
