@@ -33,6 +33,6 @@ export const dishSchema = z.object({
   cuisineType: z.string().nullable().optional(),
   tags: z.array(z.string()).optional(),
   description: z.string().max(500, "Максимум 500 символов").nullable().optional(),
-  recipeUrl: z.union([z.literal(""), z.string().url()]).nullable().optional(),
+  recipeUrl: z.string().nullable().optional(),
   recipeText: z.string().max(5000, "Максимум 5000 символов").nullable().optional()
 });
