@@ -4,13 +4,13 @@ import type { Dish } from "../types";
 import { Card } from "./ui/Card";
 import { Badge } from "./ui/Badge";
 import { MEAL_TYPE_LABELS } from "../types";
-import { SERVER_URL } from "../utils/constants";
+import { getImageUrl } from "../utils/constants";
 
 export const DishCard: FC<{ dish: Dish }> = ({ dish }) => (
   <Link to={`/library/dish/${dish.id}`}>
     <Card className="overflow-hidden p-0">
       <img
-        src={dish.media[0]?.url ? `${SERVER_URL}${dish.media[0].url}` : "https://placehold.co/400x520?text=Dish"}
+        src={dish.media[0]?.url ? getImageUrl(dish.media[0].url) : "https://placehold.co/400x520?text=Dish"}
         alt={dish.title}
         className="aspect-[3/4] w-full object-cover"
       />
