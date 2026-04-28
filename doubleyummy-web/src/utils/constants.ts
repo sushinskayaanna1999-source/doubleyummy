@@ -29,7 +29,7 @@ export const moodOptions = MOOD_TAGS.map((value) => ({
 }));
 
 export const getImageUrl = (url: string) => {
-  if (url.startsWith("http")) {
+  if (url.startsWith("http") || url.startsWith("//")) {
     return url;
   }
   return `${SERVER_URL}${url}`;
